@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# ziprecv
+#
+# Copyright (c) 2005 Paulo Matias
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+if [ -z $2 ]
+then
+  echo "Usage: ziprecv file.zip .ext"
+  exit 1
+fi
+rcdir="`dirname "$0"`"
+tmpdir="/tmp/ziprecv.$$"
+mkdir $tmpdir
+echo "--> Reading zipfile"
+cat "$1" | "$rcdir/zipsplit" $tmpdir/
+for fname in $tmpdir/*
+do
+  num=`basename $fname`
+  echo "--> Recovering file $num"
+  gzip -dc $fname > ziprecv.$num$2
+done
+rm -fr $tmpdir
+echo "--> Done."

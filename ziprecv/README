@@ -1,0 +1,17 @@
+Ziprecv is a free and opensource zip recovery utility that extracts files from a zip archive sequentially. It can extract even incomplete zip files and archives with a corrupted index.
+
+Pre-requisites:
+You must have gzip in your system.
+
+Compiling it:
+Type 'make'.
+
+Installing it:
+Type 'make install' as root.
+
+Using it:
+Type 'ziprecv file.zip .ext'. It will unpack file.zip in the current path, generating files named ziprecv.xxx.ext, where xxx is a number. These files are the content extracted from the zip archive.
+
+How it works:
+The recovery process is very simple. Each file entry inside the zip archive begins with a pkzip header. Ziprecv calls zipsplit, that searchs these headers and splits the zip archive into a file per file entry. Ziprecv then calls gzip for each of these files, uncompressing them into the current path.
+
